@@ -1,0 +1,3 @@
+version: ${APP_VERSION:dev}
+server:
+  port: ${API_PORT:8888}

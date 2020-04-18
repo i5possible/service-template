@@ -1,0 +1,17 @@
+#!/bin/bash -eu
+
+cd $(dirname $0)/..
+
+auto/build-image
+
+. deploy/config.sh
+
+echo "--- Publishing image to ${IMAGE}"
+docker push ${IMAGE}:${APP_VERSION}
+docker tag ${IMAGE}:${APP_VERSION} ${IMAGE}:latest
+docker push ${IMAGE}:latest
+
+echo "--- Printing image reference"
+DIGEST=$(docker pull ${IMAGE}:${APP_VERSION} | sed -n 's/^Digest: // p')
+IMAGE="${IMAGE}:${APP_VERSION}@${DIGEST}"
+echo "Released as: $IMAGE"

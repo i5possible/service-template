@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+
+  build-env:
+    image: openjdk:11-jdk
+    working_dir: /work
+    entrypoint: ""
+    command: bash
+    volumes:
+      - .:/work
+      - service-template-gradle-cache:/root/.gradle
+      - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  service-template-gradle-cache:
+    external: true
+

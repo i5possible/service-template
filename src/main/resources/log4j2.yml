@@ -1,0 +1,26 @@
+Configuration:
+  name: Default
+
+  Properties:
+    Property:
+      name: log-path
+      value: "logs"
+
+  Appenders:
+
+    Console:
+      name: Console_Appender
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n%rThrowable{full}"
+
+  Loggers:
+
+    Root:
+      level: info
+      AppenderRef:
+      - ref: Console_Appender
+
+    Logger:
+    - name: service-template
+      level: debug

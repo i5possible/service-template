@@ -1,0 +1,11 @@
+#!/bin/bash -eu
+
+cd $(dirname $0)/..
+
+. deploy/config.sh
+
+echo "--- Building Jar"
+auto/build-jar
+
+echo "--- Building docker image"
+docker build -t "${IMAGE}:${APP_VERSION}" -f image/Dockerfile .

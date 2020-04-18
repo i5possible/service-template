@@ -1,0 +1,15 @@
+configurations {
+    newrelic
+}
+
+dependencies {
+    newrelic 'com.newrelic.agent.java:newrelic-agent:4.12.0'
+}
+
+task copyNewrelicAgent(type: Copy) {
+    from configurations.newrelic
+    into "build/libs/"
+    rename { String fileName -> "newrelic.jar" }
+}
+
+tasks.assemble.dependsOn "copyNewrelicAgent"

@@ -1,0 +1,9 @@
+#!/bin/sh
+
+exec java \
+  -Djava.security.egd=file:/dev/./urandom \
+  -Dnewrelic.config.file=/app/newrelic.yml \
+  -Dnewrelic.config.license_key=${NEW_RELIC_LICENSE_KEY} \
+  -Dnewrelic.config.labels=${NEW_RELIC_LABELS} \
+  -javaagent:newrelic.jar \
+  -jar app.jar

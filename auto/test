@@ -1,0 +1,7 @@
+#!/bin/bash -eu
+
+cd $(dirname $0)/..
+
+# Note that the 'check' task will call all verification tasks, including 'test'
+
+auto/build-environment ./gradlew --no-daemon check jacocoTestReport --stacktrace

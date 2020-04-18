@@ -1,0 +1,8 @@
+#!/bin/bash -eu
+
+cd $(dirname $0)/..
+
+trap "docker-compose down --volume" 0
+docker volume create --name service-template-gradle-cache > /dev/null
+
+docker-compose run --rm --service-ports build-env "${@-bash}"
