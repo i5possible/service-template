@@ -2,10 +2,11 @@
 
 cd $(dirname $0)/..
 
-. deploy/config.sh
+IMAGE=service-template
+APP_VERSION=0.0.1
 
 echo "--- Building Jar"
 auto/build-jar
 
 echo "--- Building docker image"
-docker build -t "${IMAGE}:${APP_VERSION}" -f image/Dockerfile .
+docker build -t "${IMAGE}:${APP_VERSION}" -f docker/Dockerfile .

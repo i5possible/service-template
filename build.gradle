@@ -97,7 +97,7 @@ dependencies {
 
 bootRun {
     def default_environment = [
-            "API_PORT"          : "8888",
+            "API_PORT"          : "8080",
             "ENVIRONMENT"       : "local",
             "DB_HOST"           : "localhost",
             "DB_PORT"           : "5432",

@@ -1,6 +1,6 @@
 version: ${APP_VERSION:dev}
 server:
-  port: ${API_PORT:8888}
+  port: ${API_PORT:8080}
 
 spring:
   main:
