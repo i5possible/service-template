@@ -1,4 +1,4 @@
-package com.template.controller;
+package com.template.api;
 
 import com.template.resource.ExampleResource;
 import com.template.response.ExampleResponse;
@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,12 +20,12 @@ import static com.template.model.mapper.ExampleMapper.MAPPER;
  */
 
 @RestController
-@RequestMapping("examples")
-public class ExampleController {
+@RequestMapping("api/examples")
+public class ExampleApiController {
 
     private ExampleService exampleService;
 
-    public ExampleController(ExampleService exampleService) {
+    public ExampleApiController(ExampleService exampleService) {
         this.exampleService = exampleService;
     }
 
