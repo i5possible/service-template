@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.template.model.mapper.ExampleMapper.MAPPER;
+import static com.template.model.mapper.ExampleMapper.EXAMPLE_MAPPER;
+
 
 /**
  * @author lianghongbuaa@gmail.com
@@ -32,12 +33,12 @@ public class ExampleApiController {
     @GetMapping("/all")
     public List<ExampleResponse> getAllExamples() {
         return exampleService.getAllExamples().stream()
-                .map(MAPPER::mapToResponse)
+                .map(EXAMPLE_MAPPER::mapToResponse)
                 .collect(Collectors.toList());
     }
 
     @PostMapping
     public ExampleResponse createExample(@RequestBody ExampleResource resource) {
-        return MAPPER.mapToResponse(exampleService.save(MAPPER.mapResourceToModel(resource)));
+        return EXAMPLE_MAPPER.mapToResponse(exampleService.save(EXAMPLE_MAPPER.mapResourceToModel(resource)));
     }
 }
