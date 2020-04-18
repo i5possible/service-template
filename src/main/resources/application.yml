@@ -1,3 +1,74 @@
 version: ${APP_VERSION:dev}
 server:
   port: ${API_PORT:8888}
+
+spring:
+  main:
+    banner-mode: 'off'
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_MASTER_USER}
+    password: ${DB_MASTER_PASSWORD}
+    jdbc-url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    placeholders:
+      db_password: ${DB_PASSWORD}
+      db_name: ${DB_NAME}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: com.template.config.PostgreSQLDialectCustom
+        default_batch_fetch_size: 100
+        batch_fetch_style: Dynamic
+        generate_statistics: false
+        hbm2ddl:
+          delimiter: ;
+        jdbc:
+          time_zone: UTC
+          batch_size: 50
+          lob:
+            non_contextual_creation: true
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        stat: DEBUG
+
+---
+spring:
+  profiles: schema-generation
+  flyway:
+    enabled: false
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+      javax:
+        persistence:
+          schema-generation:
+            create-source: metadata
+            scripts:
+              action: create
+              create-target: src/main/resources/schema.sql
+
+---
+spring:
+  profiles: migration-generation
+  flyway:
+    enabled: false
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+      javax:
+        persistence:
+          schema-generation:
+            create-source: metadata
+            scripts:
+              action: update
+              create-target: src/main/resources/migration.sql
