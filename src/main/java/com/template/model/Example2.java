@@ -25,29 +25,25 @@ import java.util.UUID;
 public class Example2 extends EntityBase {
 
     @Id
-    @Column(columnDefinition = "varchar(32)")
-    private UUID unidId;
+    private UUID id;
 
     @Column(columnDefinition = "varchar")
-    private String sString;
+    private String stringColumn;
 
     @Column(columnDefinition = "text")
-    private String tText;
+    private String textColumn;
 
     @Column(columnDefinition = "decimal(20,2)")
-    private BigDecimal height;
+    private BigDecimal decimalColumn;
 
     @Column(columnDefinition = "date")
-    private Date dDate;
-
-    @Column(columnDefinition = "time")
-    private Date dDatetime;
+    private Date dateColumn;
 
     @Column(columnDefinition = "int")
-    private int iInt;
+    private Integer integerColumn;
 
     @Column(columnDefinition = "float4")
-    private float fFloat;
+    private Float floatColumn;
 
 
 }

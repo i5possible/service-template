@@ -21,13 +21,10 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ExampleResponse {
 
-    @Id
     private UUID id;
 
-    @Column(columnDefinition = "text")
     private String name;
 
-    @Column(columnDefinition = "numeric")
     private BigDecimal height;
 
     private Integer age;

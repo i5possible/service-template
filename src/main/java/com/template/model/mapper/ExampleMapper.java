@@ -16,7 +16,7 @@ import org.mapstruct.factory.Mappers;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ExampleMapper {
 
-    ExampleMapper MAPPER = Mappers.getMapper(ExampleMapper.class);
+    ExampleMapper EXAMPLE_MAPPER = Mappers.getMapper(ExampleMapper.class);
 
     ExampleResponse mapToResponse(Example example);
 

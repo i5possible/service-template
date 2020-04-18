@@ -1,14 +1,13 @@
 
     create table example2 (
-       unid_id varchar(32) not null,
+       id uuid not null,
         create_timestamp timestamp DEFAULT CURRENT_TIMESTAMP not null,
         update_timestamp timestamp DEFAULT CURRENT_TIMESTAMP not null,
-        d_date date,
-        d_datetime time,
-        f_float float4,
-        height decimal(20,2),
-        i_int int,
-        s_string varchar,
-        t_text text,
-        primary key (unid_id)
+        date_column date,
+        decimal_column decimal(20,2),
+        float_column float4,
+        integer_column int,
+        string_column varchar,
+        text_column text,
+        primary key (id)
     );
