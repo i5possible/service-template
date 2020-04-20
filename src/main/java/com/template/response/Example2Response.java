@@ -19,7 +19,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Example2Response extends EntityBase {
+public class Example2Response {
 
     private UUID id;
 

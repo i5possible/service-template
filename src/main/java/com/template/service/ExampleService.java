@@ -5,6 +5,8 @@ import com.template.repository.ExampleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * @author lianghongbuaa@gmail.com
@@ -14,7 +16,7 @@ import java.util.List;
 @Service
 public class ExampleService {
 
-    private ExampleRepository exampleRepository;
+    private final ExampleRepository exampleRepository;
 
     public ExampleService(ExampleRepository exampleRepository) {
         this.exampleRepository = exampleRepository;
@@ -26,5 +28,13 @@ public class ExampleService {
 
     public Example save(Example example) {
         return exampleRepository.save(example);
+    }
+
+    public Optional<Example> findById(UUID id) {
+        return exampleRepository.findById(id);
+    }
+
+    public Example updateExample(Example example, Example updateExample) {
+        return exampleRepository.persist(example.merge(updateExample));
     }
 }

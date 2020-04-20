@@ -37,4 +37,12 @@ public class Example extends EntityBase {
     private BigDecimal height;
 
     private Integer age;
+
+    public Example merge(Example newExample) {
+        this.name = newExample.name;
+        this.height = newExample.height;
+        this.age = newExample.age;
+        return this;
+    }
+
 }

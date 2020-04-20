@@ -1,7 +1,8 @@
 package com.template.model.mapper;
 
 import com.template.model.Example;
-import com.template.resource.ExampleResource;
+import com.template.resource.ExampleCreateResource;
+import com.template.resource.ExampleUpdateResource;
 import com.template.response.ExampleResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -21,5 +22,8 @@ public interface ExampleMapper {
     ExampleResponse mapToResponse(Example example);
 
     @Mapping(target = "id", expression = "java(java.util.UUID.randomUUID())")
-    Example mapResourceToModel(ExampleResource exampleResource);
+    Example mapCreateResourceToModel(ExampleCreateResource exampleCreateResource);
+
+    @Mapping(target = "id", expression = "java(java.util.UUID.fromString(exampleUpdateResource.getId()))")
+    Example mapUpdateResourceToModel(ExampleUpdateResource exampleUpdateResource);
 }
