@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class EntityBase {
 
     @CreationTimestamp
-    @Column(nullable = false, name = "create_timestamp", columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP")
+    @Column(nullable = false, updatable = false, name = "create_timestamp", columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createTimestamp;
 
     @UpdateTimestamp
