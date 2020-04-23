@@ -7,6 +7,7 @@ import com.template.security.JwtProperties;
 import com.template.security.JwtToken;
 import com.template.security.JwtTokenProvider;
 import com.template.service.AuthenticationService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +45,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
+    @ApiOperation(value = "Login")
     public ResponseEntity<JwtToken> authorize(@Valid @RequestBody UserResource userResource) {
         String jwt = authenticationService.login(userResource.getUserName(), userResource.getPassword(), userResource.isRememberMe());
 

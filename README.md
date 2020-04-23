@@ -15,8 +15,11 @@ to your service name. Make sure that no references to the string ``service-templ
 
 ## 开发流程
 * 1.生成entity实体对应的数据库表
- > * 在对应的model下创建对应的实体类    
- > * 执行`./go generate-migration V{version}__xxx`，此时会生成对应的migration文件    
+ > * 在对应的model下创建对应的实体类
+ > * 执行`./go generate-migration V{version}__xxx`，此时会生成对应的migration文件
  > * 执行`./go generate-schema`,此时会修改schema.sql文件
  > * 执行`./gradlew bootRun`,此时会执行对应新增的sql文件
+
+* 2. Swagger
+访问 http://localhost:8080/swagger-ui.html 即可
 
