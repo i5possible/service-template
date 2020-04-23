@@ -46,6 +46,20 @@ logging:
       hibernate:
         SQL: DEBUG
         stat: DEBUG
+    org.springframework:
+      data: DEBUG
+      security: DEBUG
+
+jwt:
+  authorities-key: "auth"
+  header: Authorization
+  token-head: "Bearer "
+  expiration: 604800
+  base64-secret: ZmQ0ZGI5NjQ0MDQwY2I4MjMxY2Y3ZmI3MjdhN2ZmMjNhODViOTg1ZGE0NTBjMGM4NDA5NzYxMjdjOWMwYWRmZTBlZjlhNGY3ZTg4Y2U3YTE1ODVkZDU5Y2Y3OGYwZWE1NzUzNWQ2YjFjZDc0NGMxZWU2MmQ3MjY1NzJmNTE0MzI=
+  # token is valid 24 hours
+  token-validity-in-seconds: 86400
+  # valid 30 hours
+  token-validity-in-seconds-for-remember-me: 108000
 
 ---
 spring:

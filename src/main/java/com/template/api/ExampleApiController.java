@@ -5,6 +5,7 @@ import com.template.resource.ExampleCreateResource;
 import com.template.resource.ExampleUpdateResource;
 import com.template.response.ExampleResponse;
 import com.template.service.ExampleService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,7 +27,7 @@ import static com.template.model.mapper.ExampleMapper.EXAMPLE_MAPPER;
  */
 
 @RestController
-@RequestMapping("api/examples")
+@RequestMapping("/api/examples")
 public class ExampleApiController {
 
     private ExampleService exampleService;
@@ -36,6 +37,7 @@ public class ExampleApiController {
     }
 
     @GetMapping("/all")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<ExampleResponse> getAllExamples() {
         return exampleService.getAllExamples().stream()
                 .map(EXAMPLE_MAPPER::mapToResponse)
