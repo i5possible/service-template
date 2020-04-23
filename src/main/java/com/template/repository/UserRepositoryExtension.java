@@ -2,7 +2,7 @@ package com.template.repository;
 
 import com.template.model.User;
 
-import java.util.UUID;
+import java.util.Optional;
 
 /**
  * @author lianghongbuaa@gmail.com
@@ -11,5 +11,5 @@ import java.util.UUID;
 
 public interface UserRepositoryExtension {
 
-   User findByUserName(String userName);
+    Optional<User> findByUserName(String userName);
 }

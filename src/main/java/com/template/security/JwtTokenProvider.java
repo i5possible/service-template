@@ -10,7 +10,6 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,26 +31,17 @@ import java.util.stream.Collectors;
 @Slf4j
 public class JwtTokenProvider implements InitializingBean {
 
-    private static final String AUTHORITIES_KEY = "auth";
-
-    private final String base64Secret;
-    private final long tokenValidityInMilliseconds;
-    private final long tokenValidityInMillisecondsForRememberMe;
+    private final JwtProperties jwtProperties;
 
     private Key key;
 
-    public JwtTokenProvider(
-            @Value("${jwt.base64-secret}") String base64Secret,
-            @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds,
-            @Value("${jwt.token-validity-in-seconds-for-remember-me}") long tokenValidityInSecondsForRememberMe) {
-        this.base64Secret = base64Secret;
-        this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
-        this.tokenValidityInMillisecondsForRememberMe = tokenValidityInSecondsForRememberMe * 1000;
+    public JwtTokenProvider(JwtProperties jwtProperties) {
+        this.jwtProperties = jwtProperties;
     }
 
     @Override
     public void afterPropertiesSet() {
-        byte[] keyBytes = Decoders.BASE64.decode(base64Secret);
+        byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.getBase64Secret());
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -63,14 +53,14 @@ public class JwtTokenProvider implements InitializingBean {
         long now = (new Date()).getTime();
         Date validity;
         if (rememberMe) {
-            validity = new Date(now + this.tokenValidityInMillisecondsForRememberMe);
+            validity = new Date(now + this.jwtProperties.getTokenValidityInSecondsForRememberMe() * 1000);
         } else {
-            validity = new Date(now + this.tokenValidityInMilliseconds);
+            validity = new Date(now + this.jwtProperties.getTokenValidityInSeconds() * 1000);
         }
 
         return Jwts.builder()
                 .setSubject(authentication.getName())
-                .claim(AUTHORITIES_KEY, authorities)
+                .claim(jwtProperties.getAuthoritiesKey(), authorities)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity)
                 .compact();
@@ -84,7 +74,7 @@ public class JwtTokenProvider implements InitializingBean {
                 .getBody();
 
         Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+                Arrays.stream(claims.get(jwtProperties.getAuthoritiesKey()).toString().split(","))
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 

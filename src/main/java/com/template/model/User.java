@@ -27,8 +27,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table( name = "user",
-        indexes = {@Index(columnList = "username")}
+@Table( name = "platform_user",
+        indexes = {@Index(columnList = "username", name = "user_index")}
  )
 public class User {
 
@@ -47,8 +47,8 @@ public class User {
     @Column
     private LocalDate lastPasswordResetDate;
 
-    @Column(columnDefinition = "text[]")
-    private List<String> roles;
+    @Column(columnDefinition = "text")
+    private String roles;
 
     @Column
     private LocalDate accountExpiredDate;

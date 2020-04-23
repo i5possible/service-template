@@ -1,4 +1,4 @@
-package com.template.resource;
+package com.template.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,17 +7,14 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author lianghongbuaa@gmail.com
- * @date 2020/4/21
+ * @date 2020/4/23
  */
-
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class UserResource {
+@NoArgsConstructor
+public class UserResponse {
     private String userName;
-    private String password;
     private String email;
-    private boolean rememberMe;
 }

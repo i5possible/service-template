@@ -4,6 +4,7 @@ import com.template.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +24,7 @@ public class JwtUserFactory {
                 .username(user.getUserName())
                 .password(user.getPassword())
                 .email(user.getEmail())
-                .authorities(mapToGrantedAuthorities(user.getRoles()))
+                .authorities(mapToGrantedAuthorities(Arrays.asList(user.getRoles().split(","))))
                 .lastPasswordResetDate(user.getLastPasswordResetDate())
                 .accountExpiredDate(user.getAccountExpiredDate())
                 .credentialsExpiredDate(user.getCredentialsExpiredDate())
