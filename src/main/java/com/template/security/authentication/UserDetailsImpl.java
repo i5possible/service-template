@@ -1,4 +1,4 @@
-package com.template.security;
+package com.template.security.authentication;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;

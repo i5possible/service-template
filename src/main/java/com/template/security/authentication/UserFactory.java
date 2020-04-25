@@ -1,4 +1,4 @@
-package com.template.security;
+package com.template.security.authentication;
 
 import com.template.model.User;
 import org.springframework.security.core.GrantedAuthority;

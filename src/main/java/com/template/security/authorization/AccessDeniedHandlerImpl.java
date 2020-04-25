@@ -1,7 +1,7 @@
-package com.template.security;
+package com.template.security.authorization;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.template.security.response.AccessDeniedResponse;
+import com.template.security.authorization.AccessDeniedResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;

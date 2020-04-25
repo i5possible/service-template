@@ -1,5 +1,8 @@
 package com.template.security;
 
+import com.template.security.authentication.AuthenticationFailureHandlerImpl;
+import com.template.security.authentication.AuthenticationSucessHandlerImpl;
+import com.template.security.authorization.AccessDeniedHandlerImpl;
 import com.template.security.jwt.JwtAuthenticationTokenFilter;
 import com.template.security.validateCode.ValidateCodeFilter;
 import lombok.extern.slf4j.Slf4j;

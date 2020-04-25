@@ -1,7 +1,10 @@
-package com.template.security;
+package com.template.security.authentication;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.template.model.User;
 import com.template.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,6 +22,9 @@ import java.util.UUID;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
+    @Autowired
+    private ObjectMapper mapper;
+
     private final UserRepository userRepository;
 
     public UserDetailsServiceImpl(UserRepository userRepository) {
@@ -26,7 +32,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException, UserNamePasswordErrorException {
         if (userName.equals("admin")) {
             User role_admin = User.builder()
                     .id(UUID.fromString("08e8b690-e274-41c1-ad7a-97f56a1b3f86"))
@@ -45,7 +51,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (userOptional.isPresent()) {
             return UserFactory.create(userOptional.get());
         } else {
-            throw new UsernameNotFoundException(String.format("No user found with username '%s'.", userName));
+            String message = new String();
+            try {
+                message = mapper.writeValueAsString(new AuthenticationFailureResponse());
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+            throw new UserNamePasswordErrorException(message);
         }
     }
 }

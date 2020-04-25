@@ -1,7 +1,6 @@
-package com.template.security;
+package com.template.security.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.template.security.response.AuthenticationFailureResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
@@ -23,6 +22,6 @@ public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHa
                                         AuthenticationException exception) throws IOException {
         response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         response.setContentType("application/json;charset=utf-8");
-        response.getWriter().write(mapper.writeValueAsString(new AuthenticationFailureResponse()));
+        response.getWriter().write(mapper.writeValueAsString(exception.getMessage()));
     }
 }

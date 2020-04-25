@@ -1,4 +1,4 @@
-package com.template.security.response;
+package com.template.security.validateCode;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
