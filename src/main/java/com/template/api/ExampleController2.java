@@ -4,6 +4,7 @@ import com.template.model.Example2;
 import com.template.resource.Example2Resource;
 import com.template.response.Example2Response;
 import com.template.service.Example2Service;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class ExampleController2 {
     }
 
     @GetMapping("/getAll")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<Example2Response> getAllExamples() {
         return example2Service.getAllExamples2().stream()
                 .map(EXAMPLE_2_MAPPER::mapToResponse)

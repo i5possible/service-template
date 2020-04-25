@@ -35,6 +35,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${security.use-session}")
     private Boolean useSession;
 
+    @Autowired
+    private AccessDeniedHandlerImpl accessDeniedHandlerImpl;
+
     private final UserDetailsService userDetailsService;
     private final JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
 
@@ -87,6 +90,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             //禁用 csrf，建议不要禁用 csrf
             httpSecurity.csrf().disable();
 
+            //权限配置
             httpSecurity.authorizeRequests()
                         // 静态资源 url，无需登录认证权限直接访问
                         .antMatchers("/css/**").permitAll()
@@ -95,6 +99,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         // 其它请求均需要权限认证
                         .anyRequest().authenticated();
 
+            //没有权限时的处理
+            httpSecurity.exceptionHandling()
+                    .accessDeniedHandler(accessDeniedHandlerImpl);
+
+            //登录配置
             httpSecurity.formLogin() // HTTP Basic方式
                             .loginPage("/authentication/login")
                             .loginProcessingUrl("/api/Authentication/login");
