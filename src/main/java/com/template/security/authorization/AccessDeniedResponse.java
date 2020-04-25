@@ -22,6 +22,6 @@ public class AccessDeniedResponse {
 
     public AccessDeniedResponse() {
         this.status = HttpStatus.FORBIDDEN.value();
-        this.message = "很抱歉，您没有该访问权限";
+        this.message = "很抱歉，您没有该访问权限！";
     }
 }
