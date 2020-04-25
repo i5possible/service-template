@@ -5,7 +5,9 @@ import com.template.resource.ExampleCreateResource;
 import com.template.resource.ExampleUpdateResource;
 import com.template.response.ExampleResponse;
 import com.template.service.ExampleService;
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -37,8 +39,9 @@ public class ExampleApiController {
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasRole('ADMIN')")
-    public List<ExampleResponse> getAllExamples() {
+    @PreAuthorize("hasRole('USER')")
+    @PostFilter("filterObject.name?.equals(authentication.getPrincipal().getUsername())")
+    public List<ExampleResponse> getAllExamples(Authentication authentication) {
         return exampleService.getAllExamples().stream()
                 .map(EXAMPLE_MAPPER::mapToResponse)
                 .collect(Collectors.toList());

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Optional;
 
@@ -46,13 +48,16 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     @ApiOperation(value = "Login")
-    public ResponseEntity<JwtToken> authorize(@Valid @RequestBody UserResource userResource) {
+    public ResponseEntity<JwtToken> authorize(@Valid @RequestBody UserResource userResource,
+                                              HttpServletResponse httpServletResponse) {
         String jwt = authenticationService.login(userResource.getUserName(), userResource.getPassword(), userResource.isRememberMe());
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(jwtProperties.getHeader(), jwtProperties.getTokenHead() + jwt);
 
-        // TODO: write cookie
+
+        Cookie cookie = new Cookie("jti", jwt);
+        httpServletResponse.addCookie(cookie);
         return new ResponseEntity<>(new JwtToken(jwt), httpHeaders, HttpStatus.OK);
     }
 

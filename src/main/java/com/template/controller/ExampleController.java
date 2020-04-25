@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 @Controller
-@RequestMapping("examples")
+@RequestMapping("/ganker/examples")
 public class ExampleController {
 
     private ExampleService exampleService;
