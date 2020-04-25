@@ -1,9 +1,10 @@
 package com.template.security.validateCode;
 
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class ImageCode {
+public class ImageCode implements Serializable {
 
     private BufferedImage image;
 

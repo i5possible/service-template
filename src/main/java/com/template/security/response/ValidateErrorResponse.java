@@ -13,15 +13,16 @@ import org.springframework.http.HttpStatus;
 
 @Data
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
-public class AccessDeniedResponse {
+public class ValidateErrorResponse {
 
     private Integer status;
 
     private String message;
 
-    public AccessDeniedResponse() {
-        this.status = HttpStatus.FORBIDDEN.value();
-        this.message = "很抱歉，您没有该访问权限";
+    public ValidateErrorResponse(String message) {
+        this.status = HttpStatus.UNAUTHORIZED.value();
+        this.message = message;
     }
 }

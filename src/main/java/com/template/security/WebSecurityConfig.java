@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -32,6 +31,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private AuthenticationSucessHandlerImpl authenticationSuccessHandler;
+
+    @Autowired
+    private AuthenticationFailureHandlerImpl authenticationFailureHandler;
 
     @Value("${security.use-session}")
     private Boolean useSession;
@@ -74,9 +78,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable();
 
         httpSecurity.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class);
-        httpSecurity.formLogin(form -> form
+
+        httpSecurity.formLogin()
                 .loginPage("/login.html")
-                .loginProcessingUrl("/api/Authentication/login"));
+                .loginProcessingUrl("/api/Authentication/login")
+                .successHandler(authenticationSuccessHandler) // 处理登录成功
+                .failureHandler(authenticationFailureHandler);
 
         httpSecurity.exceptionHandling()
                 .accessDeniedHandler(accessDeniedHandlerImpl);

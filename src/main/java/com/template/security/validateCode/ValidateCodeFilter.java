@@ -1,8 +1,12 @@
 package com.template.security.validateCode;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.template.api.authApiController.ValidateController;
+import com.template.security.response.ValidateErrorResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.social.connect.web.SessionStrategy;
@@ -22,13 +26,16 @@ import java.io.IOException;
 public class ValidateCodeFilter extends OncePerRequestFilter {
 
     @Autowired
+    private ObjectMapper mapper;
+
+    @Autowired
     private AuthenticationFailureHandler authenticationFailureHandler;
 
     private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        if (StringUtils.equalsIgnoreCase("/login", httpServletRequest.getRequestURI())
+        if (StringUtils.equalsIgnoreCase("/api/Authentication/login", httpServletRequest.getRequestURI())
                 && StringUtils.equalsIgnoreCase(httpServletRequest.getMethod(), "post")) {
             try {
                 validateCode(new ServletWebRequest(httpServletRequest));
@@ -40,22 +47,22 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 
-    private void validateCode(ServletWebRequest servletWebRequest) throws ServletRequestBindingException {
+    private void validateCode(ServletWebRequest servletWebRequest) throws ServletRequestBindingException, JsonProcessingException {
         ImageCode codeInSession = (ImageCode) sessionStrategy.getAttribute(servletWebRequest, ValidateController.SESSION_KEY_IMAGE_CODE);
         String codeInRequest = ServletRequestUtils.getStringParameter(servletWebRequest.getRequest(), "imageCode");
 
         if (StringUtils.isBlank(codeInRequest)) {
-            throw new ValidateCodeException("验证码不能为空！");
+            throw new ValidateCodeException(mapper.writeValueAsString(new ValidateErrorResponse("验证码不能为空！")));
         }
         if (codeInSession == null) {
-            throw new ValidateCodeException("验证码不存在！");
+            throw new ValidateCodeException(mapper.writeValueAsString(new ValidateErrorResponse("验证码不存在！")));
         }
         if (codeInSession.isExpire()) {
             sessionStrategy.removeAttribute(servletWebRequest, ValidateController.SESSION_KEY_IMAGE_CODE);
-            throw new ValidateCodeException("验证码已过期！");
+            throw new ValidateCodeException(mapper.writeValueAsString(new ValidateErrorResponse("验证码已过期！")));
         }
         if (!StringUtils.equalsIgnoreCase(codeInSession.getCode(), codeInRequest)) {
-            throw new ValidateCodeException("验证码不正确！");
+            throw new ValidateCodeException(mapper.writeValueAsString(new ValidateErrorResponse("验证码不正确！")));
         }
         sessionStrategy.removeAttribute(servletWebRequest, ValidateController.SESSION_KEY_IMAGE_CODE);
 

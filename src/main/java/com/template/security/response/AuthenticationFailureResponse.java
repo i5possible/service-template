@@ -14,14 +14,14 @@ import org.springframework.http.HttpStatus;
 @Data
 @Builder
 @AllArgsConstructor
-public class AccessDeniedResponse {
+public class AuthenticationFailureResponse {
 
     private Integer status;
 
     private String message;
 
-    public AccessDeniedResponse() {
-        this.status = HttpStatus.FORBIDDEN.value();
-        this.message = "很抱歉，您没有该访问权限";
+    public AuthenticationFailureResponse() {
+        this.status = HttpStatus.UNAUTHORIZED.value();
+        this.message = "用户名密码错误！";
     }
 }

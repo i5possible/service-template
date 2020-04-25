@@ -23,7 +23,6 @@ public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         response.setStatus(HttpStatus.FORBIDDEN.value());
         response.setContentType("application/json;charset=utf-8");
-        AccessDeniedResponse accessDeniedResponse = new AccessDeniedResponse(HttpStatus.FORBIDDEN.value(),"很抱歉，您没有该访问权限");
-        response.getWriter().write(mapper.writeValueAsString(accessDeniedResponse));
+        response.getWriter().write(mapper.writeValueAsString(new AccessDeniedResponse()));
     }
 }
