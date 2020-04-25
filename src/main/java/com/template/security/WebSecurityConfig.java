@@ -1,7 +1,10 @@
 package com.template.security;
 
+import com.template.security.jwt.JwtAuthenticationTokenFilter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,10 +24,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * @date 2020/4/21
  */
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+
+    @Value("${security.use-session}")
+    private Boolean useSession;
 
     private final UserDetailsService userDetailsService;
     private final JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
@@ -48,6 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+        log.info("use-session:" + useSession);
         httpSecurity
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()

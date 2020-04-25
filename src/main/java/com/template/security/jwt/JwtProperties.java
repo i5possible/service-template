@@ -1,4 +1,4 @@
-package com.template.security;
+package com.template.security.jwt;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;

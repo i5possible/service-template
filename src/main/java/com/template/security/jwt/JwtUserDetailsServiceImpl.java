@@ -1,8 +1,7 @@
-package com.template.security;
+package com.template.security.jwt;
 
 import com.template.model.User;
 import com.template.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -1,4 +1,4 @@
-package com.template.security;
+package com.template.security.jwt;
 
 import com.template.model.User;
 import org.springframework.security.core.GrantedAuthority;

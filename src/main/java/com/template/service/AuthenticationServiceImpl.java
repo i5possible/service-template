@@ -2,7 +2,7 @@ package com.template.service;
 
 import com.template.model.User;
 import com.template.repository.UserRepository;
-import com.template.security.JwtTokenProvider;
+import com.template.security.jwt.JwtTokenProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;

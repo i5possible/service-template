@@ -2,8 +2,7 @@ package com.template.config;
 
 import com.google.common.collect.Lists;
 import com.template.repository.RepositoryBaseImpl;
-import com.template.security.JwtProperties;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
+import com.template.security.jwt.JwtProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
