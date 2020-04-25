@@ -11,6 +11,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -37,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
     private final JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
 
-    public WebSecurityConfig(@Qualifier("jwtUserDetailsServiceImpl") UserDetailsService userDetailsService, JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter) {
+    public WebSecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService, JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter) {
         this.userDetailsService = userDetailsService;
         this.jwtAuthenticationTokenFilter = jwtAuthenticationTokenFilter;
     }
@@ -57,30 +58,47 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         log.info("use-session:" + useSession);
-        httpSecurity
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .antMatchers(
-                        HttpMethod.GET,
-                        "/",
-                        "/swagger-ui.html",
-                        "/webjars/**",
-                        "/v2/**",
-                        "/swagger-resources/**",
-                        "/*.html",
-                        "/favicon.ico",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js"
-                ).permitAll()
-                .antMatchers("/api/auth/**").permitAll()
-                .anyRequest().authenticated();
+        if(!useSession){
+            httpSecurity
+                    .csrf().disable()
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                    .authorizeRequests()
+                    .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                    .antMatchers(
+                            HttpMethod.GET,
+                            "/",
+                            "/swagger-ui.html",
+                            "/webjars/**",
+                            "/v2/**",
+                            "/swagger-resources/**",
+                            "/*.html",
+                            "/favicon.ico",
+                            "/**/*.html",
+                            "/**/*.css",
+                            "/**/*.js"
+                    ).permitAll()
+                    .antMatchers("/api/auth/**").permitAll()
+                    .anyRequest().authenticated();
 
-        httpSecurity
-                .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
-        httpSecurity.headers().cacheControl();
+            httpSecurity
+                    .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+            httpSecurity.headers().cacheControl();
+        }else{
+            //禁用 csrf，建议不要禁用 csrf
+            httpSecurity.csrf().disable();
+
+            httpSecurity.authorizeRequests()
+                        // 静态资源 url，无需登录认证权限直接访问
+                        .antMatchers("/css/**").permitAll()
+                        // 登录页，无需登录认证权限直接访问
+                        .antMatchers("/authentication/login").permitAll()
+                        // 其它请求均需要权限认证
+                        .anyRequest().authenticated();
+
+            httpSecurity.formLogin() // HTTP Basic方式
+                            .loginPage("/authentication/login")
+                            .loginProcessingUrl("/api/Authentication/login");
+        }
     }
 }
 

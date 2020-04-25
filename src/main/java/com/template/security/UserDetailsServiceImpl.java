@@ -1,4 +1,4 @@
-package com.template.security.jwt;
+package com.template.security;
 
 import com.template.model.User;
 import com.template.repository.UserRepository;
@@ -17,11 +17,11 @@ import java.util.UUID;
  */
 
 @Service
-public class JwtUserDetailsServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    public JwtUserDetailsServiceImpl(UserRepository userRepository) {
+    public UserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -39,11 +39,11 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
                     .credentialsExpiredDate(LocalDate.now().plusYears(1))
                     .password("$2a$10$/7mgHXzTtY9Vjd/pORN0DOCIPugrQOc/ghzTXiW9.F1pH4fKf3f3u")
                     .build();
-            return JwtUserFactory.create(role_admin);
+            return UserFactory.create(role_admin);
         }
         Optional<User> userOptional = userRepository.findByUserName(userName);
         if (userOptional.isPresent()) {
-            return JwtUserFactory.create(userOptional.get());
+            return UserFactory.create(userOptional.get());
         } else {
             throw new UsernameNotFoundException(String.format("No user found with username '%s'.", userName));
         }

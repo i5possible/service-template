@@ -1,4 +1,4 @@
-package com.template.controller;
+package com.template.api;
 
 import com.template.model.Example2;
 import com.template.resource.Example2Resource;
@@ -14,7 +14,7 @@ import static com.template.model.mapper.Example2Mapper.EXAMPLE_2_MAPPER;
 
 
 @RestController
-@RequestMapping("/examples2")
+@RequestMapping("/api/examples2")
 public class ExampleController2 {
 
     private Example2Service example2Service;

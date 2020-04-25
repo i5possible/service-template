@@ -1,4 +1,4 @@
-package com.template.security.jwt;
+package com.template.security;
 
 import com.template.model.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,13 +13,13 @@ import java.util.stream.Collectors;
  * @date 2020/4/21
  */
 
-public class JwtUserFactory {
+public class UserFactory {
 
-    private JwtUserFactory() {
+    private UserFactory() {
     }
 
-    public static JwtUser create(User user) {
-        return JwtUser.builder()
+    public static UserDetailsImpl create(User user) {
+        return UserDetailsImpl.builder()
                 .id(user.getId().toString())
                 .username(user.getUserName())
                 .password(user.getPassword())

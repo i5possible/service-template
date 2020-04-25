@@ -1,4 +1,4 @@
-package com.template.security.jwt;
+package com.template.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.Collection;
 @Data
 @Builder
 @AllArgsConstructor
-public class JwtUser implements UserDetails {
+public class UserDetailsImpl implements UserDetails {
     private final String id;
     private final String username;
     private final String password;
