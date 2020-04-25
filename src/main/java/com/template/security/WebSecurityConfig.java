@@ -1,6 +1,7 @@
 package com.template.security;
 
 import com.template.security.jwt.JwtAuthenticationTokenFilter;
+import com.template.security.validateCode.ValidateCodeFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -36,6 +37,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private Boolean useSession;
 
     @Autowired
+    private ValidateCodeFilter validateCodeFilter;
+
+    @Autowired
     private AccessDeniedHandlerImpl accessDeniedHandlerImpl;
 
     private final UserDetailsService userDetailsService;
@@ -69,6 +73,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         httpSecurity.csrf().disable();
 
+        httpSecurity.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class);
         httpSecurity.formLogin(form -> form
                 .loginPage("/login.html")
                 .loginProcessingUrl("/api/Authentication/login"));
@@ -93,7 +98,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js"
                 ).permitAll()
                 .antMatchers("/login.html").permitAll()
-                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/auth/**", "/api/code/image").permitAll()
                 .anyRequest().authenticated();
 
         httpSecurity.headers().cacheControl();
