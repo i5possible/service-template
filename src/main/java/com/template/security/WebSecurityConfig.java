@@ -70,7 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable();
 
         httpSecurity.formLogin(form -> form
-                .loginPage("/authentication/login")
+                .loginPage("/login.html")
                 .loginProcessingUrl("/api/Authentication/login"));
 
         httpSecurity.exceptionHandling()
@@ -92,8 +92,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js"
                 ).permitAll()
+                .antMatchers("/login.html").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/authentication/login").permitAll()
                 .anyRequest().authenticated();
 
         httpSecurity.headers().cacheControl();
