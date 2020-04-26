@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <base href="/">
+    <link rel="stylesheet" href="css/login.css" type="text/css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+    <script type="text/javascript" src="/js/login.js"></script>
+</head>
+<body>
+<form class="login-page" action="/api/auth/login" method="post">
+    <div class="form">
+        <h3>账户登录</h3>
+        <input type="text" placeholder="用户名" name="username" required="required"/>
+        <input type="password" placeholder="密码" name="password" required="required"/>
+        <span style="display: inline">
+            <input type="text" name="imageCode" placeholder="验证码" style="width: 50%;"/>
+            <img id="verifyCodeImage" style="float: right;width: 50%;cursor: pointer;" src="/api/code/image"/>
+        </span>
+<!--        <div class="verify-code">-->
+<!--          <div class="verify-code-image">-->
+<!--            <img id="verifyCodeImage" src="/api/code/image"/>-->
+<!--          </div>-->
+<!--          <i class="iconfont icon-image"></i>-->
+<!--          <input id="verifyCode" name="verifyCode" type="text" placeholder="请输入验证码">-->
+<!--        </div>-->
+        <button type="submit">登录</button>
+    </div>
+</form>
+</body>
+</html>

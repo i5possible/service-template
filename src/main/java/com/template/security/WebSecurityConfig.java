@@ -3,7 +3,7 @@ package com.template.security;
 import com.template.security.authentication.AuthenticationFailureHandlerImpl;
 import com.template.security.authentication.AuthenticationSuccessHandlerImpl;
 import com.template.security.authorization.AccessDeniedHandlerImpl;
-import com.template.security.jwt.JwtAuthenticationTokenFilter;
+import com.template.security.jwt.JwtAuthorizationFilter;
 import com.template.security.validateCode.ValidateCodeFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +50,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private AccessDeniedHandlerImpl accessDeniedHandlerImpl;
 
     private final UserDetailsService userDetailsService;
-    private final JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+    private final JwtAuthorizationFilter jwtAuthenticationTokenFilter;
 
-    public WebSecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService, JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter) {
+    public WebSecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService, JwtAuthorizationFilter jwtAuthenticationTokenFilter) {
         this.userDetailsService = userDetailsService;
         this.jwtAuthenticationTokenFilter = jwtAuthenticationTokenFilter;
     }
@@ -77,8 +77,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             httpSecurity
                     .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
             httpSecurity.formLogin()
-                    .loginPage("/login.html")
-                    .loginProcessingUrl("/api/auth/login");
+                    .loginPage("/login_jwt.html")
+                    .loginProcessingUrl("/api/auth/login")
+                    .successHandler(authenticationSuccessHandler)
+                    .failureHandler(authenticationFailureHandler);
         } else {
             httpSecurity.formLogin()
                     .loginPage("/login.html")

@@ -41,21 +41,21 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
-    @PostMapping("/login")
-    @ApiOperation(value = "Login")
-    public ResponseEntity<JwtToken> authorize(@Valid @RequestBody UserResource userResource,
-                                              HttpServletResponse httpServletResponse) {
-        String jwt = authenticationService.login(userResource.getUserName(), userResource.getPassword(), userResource.isRememberMe());
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(jwtProperties.getHeader(), jwtProperties.getTokenHead() + jwt);
-
-        Cookie cookie = new Cookie(jwtProperties.getTokenCookie(), jwt);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/api");
-        httpServletResponse.addCookie(cookie);
-        return new ResponseEntity<>(new JwtToken(jwt), httpHeaders, HttpStatus.OK);
-    }
+//    @PostMapping("/login")
+//    @ApiOperation(value = "Login")
+//    public ResponseEntity<JwtToken> authorize(@Valid @RequestBody UserResource userResource,
+//                                              HttpServletResponse httpServletResponse) {
+//        String jwt = authenticationService.login(userResource.getUserName(), userResource.getPassword(), userResource.isRememberMe());
+//
+//        HttpHeaders httpHeaders = new HttpHeaders();
+//        httpHeaders.add(jwtProperties.getHeader(), jwtProperties.getTokenHead() + jwt);
+//
+//        Cookie cookie = new Cookie(jwtProperties.getTokenCookie(), jwt);
+//        cookie.setHttpOnly(true);
+//        cookie.setPath("/api");
+//        httpServletResponse.addCookie(cookie);
+//        return new ResponseEntity<>(new JwtToken(jwt), httpHeaders, HttpStatus.OK);
+//    }
 
     @PostMapping("/register")
     public UserResponse register(@Valid @RequestBody UserResource userResource) {

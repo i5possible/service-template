@@ -23,12 +23,12 @@ import java.util.Optional;
 
 @Component
 @Slf4j
-public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
+public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider tokenProvider;
     private final JwtProperties jwtProperties;
 
-    public JwtAuthenticationTokenFilter(JwtTokenProvider tokenProvider, JwtProperties jwtProperties) {
+    public JwtAuthorizationFilter(JwtTokenProvider tokenProvider, JwtProperties jwtProperties) {
         this.tokenProvider = tokenProvider;
         this.jwtProperties = jwtProperties;
     }
@@ -54,6 +54,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     }
 
     private Optional<String> resolveToken(HttpServletRequest request) {
+        // TODO: use cookies or header
         String bearerToken = request.getHeader(jwtProperties.getHeader());
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(jwtProperties.getTokenHead())) {
             return Optional.of(bearerToken.substring(7));
