@@ -33,16 +33,11 @@ import static com.template.model.mapper.UserMapper.USER_MAPPER;
 @RequestMapping("/api/auth")
 public class AuthenticationController {
 
-    private final JwtTokenProvider tokenProvider;
     private final JwtProperties jwtProperties;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final AuthenticationService authenticationService;
 
-    public AuthenticationController(JwtTokenProvider tokenProvider,
-                                    JwtProperties jwtProperties, AuthenticationManagerBuilder authenticationManagerBuilder, AuthenticationService authenticationService) {
-        this.tokenProvider = tokenProvider;
+    public AuthenticationController(JwtProperties jwtProperties, AuthenticationService authenticationService) {
         this.jwtProperties = jwtProperties;
-        this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.authenticationService = authenticationService;
     }
 
@@ -55,8 +50,9 @@ public class AuthenticationController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(jwtProperties.getHeader(), jwtProperties.getTokenHead() + jwt);
 
-
-        Cookie cookie = new Cookie("jti", jwt);
+        Cookie cookie = new Cookie(jwtProperties.getTokenCookie(), jwt);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/api");
         httpServletResponse.addCookie(cookie);
         return new ResponseEntity<>(new JwtToken(jwt), httpHeaders, HttpStatus.OK);
     }

@@ -1,7 +1,7 @@
 package com.template.security;
 
 import com.template.security.authentication.AuthenticationFailureHandlerImpl;
-import com.template.security.authentication.AuthenticationSucessHandlerImpl;
+import com.template.security.authentication.AuthenticationSuccessHandlerImpl;
 import com.template.security.authorization.AccessDeniedHandlerImpl;
 import com.template.security.jwt.JwtAuthenticationTokenFilter;
 import com.template.security.validateCode.ValidateCodeFilter;
@@ -35,7 +35,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private AuthenticationSucessHandlerImpl authenticationSuccessHandler;
+    private AuthenticationSuccessHandlerImpl authenticationSuccessHandler;
 
     @Autowired
     private AuthenticationFailureHandlerImpl authenticationFailureHandler;
@@ -76,17 +76,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
             httpSecurity
                     .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+            httpSecurity.formLogin()
+                    .loginPage("/login.html")
+                    .loginProcessingUrl("/api/auth/login");
+        } else {
+            httpSecurity.formLogin()
+                    .loginPage("/login.html")
+                    .loginProcessingUrl("/api/Authentication/login")
+                    .successHandler(authenticationSuccessHandler)
+                    .failureHandler(authenticationFailureHandler);
         }
 
         httpSecurity.csrf().disable();
 
         httpSecurity.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class);
 
-        httpSecurity.formLogin()
-                .loginPage("/login.html")
-                .loginProcessingUrl("/api/Authentication/login")
-                .successHandler(authenticationSuccessHandler) // 处理登录成功
-                .failureHandler(authenticationFailureHandler);
 
         httpSecurity.exceptionHandling()
                 .accessDeniedHandler(accessDeniedHandlerImpl);

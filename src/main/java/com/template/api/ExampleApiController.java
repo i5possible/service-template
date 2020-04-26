@@ -39,7 +39,7 @@ public class ExampleApiController {
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostFilter("filterObject.name?.equals(authentication.getPrincipal().getUsername())")
     public List<ExampleResponse> getAllExamples(Authentication authentication) {
         return exampleService.getAllExamples().stream()

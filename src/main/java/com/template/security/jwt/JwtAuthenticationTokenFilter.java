@@ -60,7 +60,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
         return Optional.ofNullable(request.getCookies())
                 .flatMap(cookies -> Arrays.stream(cookies)
-                        .filter(cookie -> cookie.getName().equals("jti"))
+                        .filter(cookie -> cookie.getName().equals(jwtProperties.getTokenCookie()))
                         .findFirst().map(Cookie::getValue));
     }
 }

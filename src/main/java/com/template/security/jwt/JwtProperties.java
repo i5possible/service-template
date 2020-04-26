@@ -26,4 +26,6 @@ public class JwtProperties {
 
     private String header;
 
+    private String tokenCookie;
+
 }

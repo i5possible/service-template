@@ -23,13 +23,21 @@ import java.io.IOException;
 @Component
 public class ValidateCodeFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private ObjectMapper mapper;
+    private final ObjectMapper mapper;
 
-    @Autowired
     private AuthenticationFailureHandler authenticationFailureHandler;
 
     private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
+
+    public ValidateCodeFilter(ObjectMapper mapper) {
+        this.mapper = mapper;
+    }
+
+    @Autowired
+    public ValidateCodeFilter(ObjectMapper mapper, AuthenticationFailureHandler authenticationFailureHandler) {
+        this.mapper = mapper;
+        this.authenticationFailureHandler = authenticationFailureHandler;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
